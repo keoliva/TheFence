@@ -2,7 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import { Button } from 'react-native-elements';
 
-const LoginButton = () => {
+const LoginButton = ({ onPress }) => {
 	return (
 		<View>
 			<Button
@@ -21,6 +21,7 @@ const LoginButton = () => {
 					height: 45,
 					borderColor: 'transparent',
 				}}
+				onPress={onPress}
 			/>
 		</View>
 	);
