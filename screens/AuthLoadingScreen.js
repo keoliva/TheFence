@@ -8,7 +8,6 @@ class AuthLoadingScreen extends React.Component {
 		this._bootstrapAsync();
 	}
 	async _bootstrapAsync() {
-		await AsyncStorage.removeItem('ACCESS_TOKEN');
 		let userToken = await AsyncStorage.getItem('USER_TOKEN');
 		if (userToken) {
 			userToken = JSON.parse(userToken).accessToken;

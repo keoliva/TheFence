@@ -56,12 +56,17 @@ const createToken = async (code, refreshToken) => {
 
 export const signIn = () => async dispatch => {
 	try {
+		const fields = [
+			'user-read-currently-playing',
+			'user-modify-playback-state',
+		];
 		const { params } = await AuthSession.startAsync({
 			authUrl:
 				'https://accounts.spotify.com/authorize' +
 				`?client_id=${spotify.id}` +
 				`&redirect_uri=${encodeURIComponent(REDIRECT_URL)}` +
-				`&response_type=code`,
+				`&response_type=code` +
+				`&scope=${encodeURIComponent(fields.join(' '))}`,
 		});
 		const { access_token, refresh_token } = await createToken(params.code);
 		dispatch(
