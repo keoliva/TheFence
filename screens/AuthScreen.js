@@ -1,18 +1,27 @@
 import React from 'react';
-import {} from 'react-native';
 import LoginButton from '../components/SpotifyLoginButton';
-import { AuthSession } from 'expo';
-import secret from 'secrets';
+import { connect } from 'react-redux';
+import { signIn } from '../store';
 
-const REDIRECT_URL = AuthSession.getRedirectUrl();
-const spotify = {
-	id: '9ba6f7d5f13a4441b16cefba57cbdef6',
-	secret,
-};
-
-export default class AuthScreen extends React.Component {
-	async _signInAsync() {}
+class AuthScreen extends React.Component {
+	constructor() {
+		super();
+		this._signInAsync = this._signInAsync.bind(this);
+	}
+	async _signInAsync() {
+		await this.props.signIn();
+		this.props.navigation.navigate('Main');
+	}
 	render() {
 		return <LoginButton onPress={this._signInAsync} />;
 	}
 }
+
+const mapDispatch = dispatch => ({
+	signIn: () => dispatch(signIn()),
+});
+
+export default connect(
+	null,
+	mapDispatch
+)(AuthScreen);

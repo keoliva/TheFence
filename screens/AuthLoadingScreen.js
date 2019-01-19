@@ -1,15 +1,18 @@
 import React from 'react';
 import { ActivityIndicator, AsyncStorage, View } from 'react-native';
+import { connect } from 'react-redux';
 
-const USER_TOKEN = 'TheFenceUserToken';
-
-export default class AuthLoadingScreen extends React.Component {
+class AuthLoadingScreen extends React.Component {
 	constructor() {
 		super();
 		this._bootstrapAsync();
 	}
 	async _bootstrapAsync() {
-		const userToken = await AsyncStorage.getItem(USER_TOKEN);
+		let userToken = await AsyncStorage.getItem('ACCESS_TOKEN');
+		console.log('USER TOKEN ', userToken);
+		if (userToken) {
+			userToken = JSON.parse(userToken).accessToken;
+		}
 		this.props.navigation.navigate(userToken ? 'Main' : 'Auth');
 	}
 	render() {
@@ -20,3 +23,7 @@ export default class AuthLoadingScreen extends React.Component {
 		);
 	}
 }
+
+const mapState = state => ({});
+
+export default connect(mapState)(AuthLoadingScreen);

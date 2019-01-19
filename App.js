@@ -1,6 +1,8 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import AppNavigator from './navigation/AppNavigator';
+import { Provider } from 'react-redux';
+import store from './store';
 
 const styles = StyleSheet.create({
 	container: {
@@ -14,9 +16,11 @@ const styles = StyleSheet.create({
 export default class App extends React.Component {
 	render() {
 		return (
-			<View style={styles.container}>
-				<AppNavigator />
-			</View>
+			<Provider store={store}>
+				<View style={styles.container}>
+					<AppNavigator />
+				</View>
+			</Provider>
 		);
 	}
 }
