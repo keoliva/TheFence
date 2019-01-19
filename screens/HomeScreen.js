@@ -9,8 +9,9 @@ import {
 	View,
 } from 'react-native';
 import { Button } from 'react-native-elements';
-import { refreshTokenForRequest, logout } from '../store';
+import { logout } from '../store';
 import { connect } from 'react-redux';
+import FetchInfoButton from '../components/FetchUserInfoButton';
 
 const styles = StyleSheet.create({
 	container: {
@@ -26,41 +27,22 @@ class HomeScreen extends React.Component {
 		super();
 		this.logout = this.logout.bind(this);
 	}
-	componentDidMount() {
-		this.props.refreshToken();
-	}
 	logout() {
 		this.props.logout();
 		this.props.navigation.navigate('AuthLoading');
 	}
+
 	render() {
 		return (
 			<View>
 				<Text>Hello World</Text>
-				<Button
-					icon={{
-						name: 'spotify',
-						color: 'white',
-						type: 'font-awesome',
-						size: 23,
-					}}
-					title="Log Out"
-					buttonStyle={{
-						backgroundColor: 'black',
-						borderWidth: 0,
-						borderRadius: 5,
-						width: 300,
-						height: 45,
-						borderColor: 'transparent',
-					}}
-					onPress={this.logout}
-				/>
+				<FetchInfoButton />
+				<Button title="Log Out" onPress={this.logout} />
 			</View>
 		);
 	}
 }
 const mapDispatch = dispatch => ({
-	refreshToken: () => dispatch(refreshTokenForRequest()),
 	logout: () => dispatch(logout()),
 });
 export default connect(
