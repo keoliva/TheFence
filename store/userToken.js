@@ -6,15 +6,15 @@ import base64 from 'react-native-base64';
 /**
  * ACTION TYPES
  */
-const GOT_ACCESS_TOKEN = 'GOT_ACCESS_TOKEN';
+const GOT_USER_TOKEN = 'GOT_USER_TOKEN';
 const LOG_OUT = 'LOG_OUT';
 
 /**
  * ACTION CREATORS
  */
-const gotAccessToken = accessToken => ({
-	type: GOT_ACCESS_TOKEN,
-	payload: accessToken,
+const gotUserToken = userToken => ({
+	type: GOT_USER_TOKEN,
+	payload: userToken,
 });
 
 export const logout = () => ({
@@ -65,7 +65,7 @@ export const signIn = () => async dispatch => {
 		});
 		const { access_token, refresh_token } = await createToken(params.code);
 		dispatch(
-			gotAccessToken({
+			gotUserToken({
 				accessToken: access_token,
 				refreshToken: refresh_token,
 				timeReceived: new Date(),
@@ -78,9 +78,9 @@ export const signIn = () => async dispatch => {
 
 export const refreshTokenForRequest = () => async (dispatch, getState) => {
 	// I'll use this if I already have an access token in my AsyncStorage
-	let { accessToken, refreshToken } = getState().accessToken;
+	let { accessToken, refreshToken } = getState().userToken;
 	try {
-		let userToken = await AsyncStorage.getItem('ACCESS_TOKEN').then(token =>
+		let userToken = await AsyncStorage.getItem('USER_TOKEN').then(token =>
 			JSON.parse(token)
 		);
 		const secondsPassed = Math.round(
@@ -88,12 +88,12 @@ export const refreshTokenForRequest = () => async (dispatch, getState) => {
 		);
 		// if it's within 59 minutes of receiving the access token
 		if (secondsPassed <= 3540) {
-			dispatch(gotAccessToken(userToken));
+			dispatch(gotUserToken(userToken));
 			return;
 		}
 		const { access_token } = await createToken(null, refreshToken);
 		dispatch(
-			gotAccessToken({
+			gotUserToken({
 				accessToken: access_token,
 				timeReceived: new Date(),
 			})
@@ -118,7 +118,7 @@ const initialState = {
  */
 export default (state = initialState, action) => {
 	switch (action.type) {
-		case GOT_ACCESS_TOKEN:
+		case GOT_USER_TOKEN:
 			return { ...state, ...action.payload };
 		case LOG_OUT:
 			return { ...state, accessToken: null };
