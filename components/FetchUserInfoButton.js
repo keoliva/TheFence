@@ -1,7 +1,8 @@
 import React from 'react';
+import { Alert } from 'react-native';
 import { Button } from 'react-native-elements';
 import { connect } from 'react-redux';
-import { refreshTokenForRequest } from '../store';
+import { refreshTokenForRequest, fetchCurrentLocation } from '../store';
 
 class FetchUserInfo extends React.Component {
 	constructor() {
@@ -9,23 +10,32 @@ class FetchUserInfo extends React.Component {
 		this.handlePress = this.handlePress.bind(this);
 	}
 
-	async getCurrentlyPlayingTrack() {
-		const { progress_ms, item } = await fetch(
-			'https://api.spotify.com/v1/me/player/currently-playing',
-			{
-				method: 'GET',
-				headers: {
-					'Content-Type': 'application/json',
-					Authorization: 'Bearer ' + this.props.accessToken,
-				},
-			}
-		).then(res => res.json());
-		console.log(progress_ms, item.name);
+	getCurrentlyPlayingTrack() {
+		return fetch('https://api.spotify.com/v1/me/player/currently-playing', {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: 'Bearer ' + this.props.accessToken,
+			},
+		}).then(res => res.json());
 	}
 
 	async handlePress() {
 		await this.props.refreshToken();
-		await this.getCurrentlyPlayingTrack();
+		const [track] = await Promise.all([
+			this.getCurrentlyPlayingTrack(),
+			this.props.fetchLocation(),
+		]);
+		Alert.alert(
+			`"${track.item.name}" by ${track.item.artists[0].name}`,
+			'Would you like to save the track you were listening to at this spot?',
+			[
+				{ text: 'Cancel', style: 'cancel' },
+				{ text: 'OK', onPress: () => console.log('OK Pressed') },
+			]
+		);
+		// send location (coords.latitude, coords.longitude)
+		// track (track.item.uri, track.progress_ms) to server
 	}
 
 	render() {
@@ -38,6 +48,7 @@ const mapState = state => ({
 });
 const mapDispatch = dispatch => ({
 	refreshToken: () => dispatch(refreshTokenForRequest()),
+	fetchLocation: () => dispatch(fetchCurrentLocation()),
 });
 
 export default connect(
