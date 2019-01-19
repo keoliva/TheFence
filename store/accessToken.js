@@ -17,9 +17,9 @@ const gotAccessToken = accessToken => ({
 	payload: accessToken,
 });
 
-export const logOut = {
+export const logout = () => ({
 	type: LOG_OUT,
-};
+});
 
 /**
  * THUNK CREATORS

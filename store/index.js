@@ -16,9 +16,7 @@ const store = createStore(reducer, middleware);
 //
 store.subscribe(() => {
 	const userToken = store.getState().accessToken;
-	if (userToken.accessToken) {
-		AsyncStorage.setItem('ACCESS_TOKEN', JSON.stringify(userToken));
-	}
+	AsyncStorage.setItem('ACCESS_TOKEN', JSON.stringify(userToken));
 });
 export default store;
 export * from './accessToken';
