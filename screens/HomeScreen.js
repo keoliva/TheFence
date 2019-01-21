@@ -53,7 +53,7 @@ class HomeScreen extends React.Component {
 	}
 
 	componentWillUnmount() {
-		navigator.geolocation.stopWatch(this.state.watchId);
+		navigator.geolocation.stopObserving(this.state.watchId);
 	}
 
 	logout() {
