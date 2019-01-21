@@ -4,7 +4,10 @@ import { logout } from '../store';
 import { connect } from 'react-redux';
 import TabButton from '../components/BottomTabButton';
 import FetchInfoButton from '../components/FetchUserInfoButton';
-import { MapView } from 'expo';
+
+import { MapView, Marker } from 'expo';
+import SpotifyHelper from '../api/Spotify';
+import GeolocationHelper from '../api/Geolocation';
 
 const styles = StyleSheet.create({
 	bottomTab: {
@@ -27,7 +30,29 @@ const styles = StyleSheet.create({
 class HomeScreen extends React.Component {
 	constructor() {
 		super();
+		this.location = new GeolocationHelper();
+
+		let watchId = navigator.geolocation.watchPosition(
+			async function(position) {
+				await this.location.fetchBlurbsCloseBy(position.coords);
+				console.log('DONT TELL ME YOU DONT KNOW WHAT THIS IS ', this);
+				this.setState({
+					markers: this.location.state.markers,
+				});
+			},
+			null,
+			{ distance: 100 }
+		);
+
+		this.state = {
+			watchId,
+			markers: [],
+		};
 		this.logout = this.logout.bind(this);
+	}
+
+	componentWillUnmount() {
+		navigator.geolocation.stopWatch(this.state.watchId);
 	}
 	logout() {
 		this.props.logout();
@@ -37,7 +62,11 @@ class HomeScreen extends React.Component {
 	render() {
 		return (
 			<View>
-				<MapView style={styles.mapView} showsUserLocation followsUserLocation />
+				<MapView style={styles.mapView} showsUserLocation>
+					{this.state.markers.map(marker => (
+						<MapView.Marker coordinate={marker.coordinate} key={marker.key} />
+					))}
+				</MapView>
 				<View style={styles.bottomTab}>
 					<View style={styles.bottomSubTab}>
 						<TabButton name="power-settings-new" onPress={this.logout} />
