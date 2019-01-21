@@ -33,9 +33,8 @@ class HomeScreen extends React.Component {
 		this.location = new GeolocationHelper();
 
 		let watchId = navigator.geolocation.watchPosition(
-			async function(position) {
+			async position => {
 				await this.location.fetchBlurbsCloseBy(position.coords);
-				console.log('DONT TELL ME YOU DONT KNOW WHAT THIS IS ', this);
 				this.setState({
 					markers: this.location.state.markers,
 				});
