@@ -1,6 +1,7 @@
 import React from 'react';
 import { ActivityIndicator, AsyncStorage, View } from 'react-native';
 import { connect } from 'react-redux';
+import styles from '../styles';
 
 class AuthLoadingScreen extends React.Component {
 	constructor() {
@@ -16,7 +17,7 @@ class AuthLoadingScreen extends React.Component {
 	}
 	render() {
 		return (
-			<View>
+			<View style={styles.container}>
 				<ActivityIndicator />
 			</View>
 		);

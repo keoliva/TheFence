@@ -1,7 +1,9 @@
 import React from 'react';
 import LoginButton from '../components/SpotifyLoginButton';
+import { View } from 'react-native';
 import { connect } from 'react-redux';
 import { signIn } from '../store';
+import styles from '../styles';
 
 class AuthScreen extends React.Component {
 	constructor() {
@@ -10,10 +12,14 @@ class AuthScreen extends React.Component {
 	}
 	async _signInAsync() {
 		await this.props.signIn();
-		this.props.navigation.navigate('Main');
+		this.props.navigation.navigate('AuthLoading');
 	}
 	render() {
-		return <LoginButton onPress={this._signInAsync} />;
+		return (
+			<View style={styles.container}>
+				<LoginButton onPress={this._signInAsync} />
+			</View>
+		);
 	}
 }
 
