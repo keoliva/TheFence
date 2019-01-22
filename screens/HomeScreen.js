@@ -1,6 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
-import { logout, fetchCurrentLocation, refreshTokenForRequest } from '../store';
+import { logout, refreshTokenForRequest } from '../store';
 import styles from '../styles';
 import { connect } from 'react-redux';
 import TabButton from '../components/BottomTabButton';
@@ -14,6 +14,7 @@ class HomeScreen extends React.Component {
 	constructor() {
 		super();
 		this.locationAPI = new GeolocationHelper();
+		this.lastLocation = null;
 
 		this.state = {
 			markers: [],
@@ -51,17 +52,18 @@ class HomeScreen extends React.Component {
 	}
 
 	async onAddMarkerPress() {
-		await Promise.all([
-			this.props.fetchCurrentLocation(),
-			this.props.refreshToken(),
-		]);
+		// await Promise.all([
+		// 	this.props.fetchCurrentLocation(),
+		// 	this.props.refreshToken(),
+		// ]);
+		await this.props.refreshToken();
 		const track = await SpotifyAPI.getCurrentlyPlayingTrack(
 			this.props.accessToken
 		);
-		if (!this.props.location.coords || !track) {
-			console.log('coordinates missing', this.props.location.coords);
+		if (!this.lastLocation || !track) {
+			console.log('coordinates missing', this.lastLocation);
 		} else {
-			await this.locationAPI.addBlurb(this.props.location.coords, track);
+			await this.locationAPI.addBlurb(this.lastLocation, track);
 			this.setState({
 				markers: this.locationAPI.markers,
 			});
@@ -71,9 +73,20 @@ class HomeScreen extends React.Component {
 	render() {
 		return (
 			<View>
-				<MapView style={styles.mapView} showsUserLocation followsUserLocation>
+				<MapView
+					style={styles.mapView}
+					showsUserLocation
+					followsUserLocation
+					onRegionChangeComplete={region => {
+						this.lastLocation = region;
+					}}
+				>
 					{this.state.markers.map(marker => (
-						<SongMarker key={marker.id} marker={marker} />
+						<SongMarker
+							key={marker.id}
+							marker={marker}
+							play={() => SpotifyAPI.playTrack(this.props.accessToken, marker)}
+						/>
 					))}
 				</MapView>
 				<View style={styles.bottomTab}>
@@ -90,12 +103,10 @@ class HomeScreen extends React.Component {
 	}
 }
 const mapState = state => ({
-	location: state.location,
 	accessToken: state.userToken.accessToken,
 });
 const mapDispatch = dispatch => ({
 	logout: () => dispatch(logout()),
-	fetchCurrentLocation: () => dispatch(fetchCurrentLocation()),
 	refreshToken: () => dispatch(refreshTokenForRequest()),
 });
 export default connect(
