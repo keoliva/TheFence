@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import TabButton from '../components/BottomTabButton';
 import SongMarker from '../components/SongMarker';
 
-import { MapView, fitToSuppliedMarkers } from 'expo';
+import { MapView } from 'expo';
 import SpotifyHelper from '../api/Spotify';
 import GeolocationHelper from '../api/Geolocation';
 
@@ -33,27 +33,34 @@ class HomeScreen extends React.Component {
 		this.locationAPI = new GeolocationHelper();
 		this.spotifyAPI = new SpotifyHelper();
 
+		this.state = {
+			markers: [],
+		};
+
+		this.logout = this.logout.bind(this);
+		this.onAddMarkerPress = this.onAddMarkerPress.bind(this);
+	}
+
+	componentDidMount() {
 		let watchId = navigator.geolocation.watchPosition(
 			async position => {
+				console.log('new position found');
 				await this.locationAPI.fetchBlurbsCloseBy(position.coords);
 				this.setState({
 					markers: this.locationAPI.markers,
 				});
 			},
-			null,
+			err => console.log(err),
 			{ distance: 100 }
 		);
-
-		this.state = {
+		this.setState(prevState => ({
+			...prevState,
 			watchId,
-			markers: [],
-		};
-		this.logout = this.logout.bind(this);
-		this.onAddMarkerPress = this.onAddMarkerPress.bind(this);
+		}));
 	}
 
 	componentWillUnmount() {
-		navigator.geolocation.stopObserving(this.state.watchId);
+		navigator.geolocation.clearWatch(this.state.watchId);
 	}
 
 	logout() {
@@ -69,10 +76,18 @@ class HomeScreen extends React.Component {
 		const track = await this.spotifyAPI.getCurrentlyPlayingTrack(
 			this.props.accessToken
 		);
-		await this.locationAPI.addBlurb(this.props.location.coords, track);
-		this.setState({
-			markers: this.locationAPI.markers,
-		});
+		if (!this.props.location.coords || !track) {
+			console.log(
+				'was supposed to make a new point, but either location or track information missing',
+				this.props.location.coords,
+				track
+			);
+		} else {
+			await this.locationAPI.addBlurb(this.props.location.coords, track);
+			this.setState({
+				markers: this.locationAPI.markers,
+			});
+		}
 	}
 
 	render() {
