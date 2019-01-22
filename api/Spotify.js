@@ -14,7 +14,6 @@ export default class Spotify {
 	}
 
 	static formatForDatabase(track) {
-		console.log(track.item);
 		return {
 			trackURI: track.item.album.uri,
 			trackName: track.item.name,
