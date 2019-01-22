@@ -1,37 +1,19 @@
 import React from 'react';
-import { StyleSheet, View, Dimensions } from 'react-native';
+import { View } from 'react-native';
 import { logout, fetchCurrentLocation, refreshTokenForRequest } from '../store';
+import styles from '../styles';
 import { connect } from 'react-redux';
 import TabButton from '../components/BottomTabButton';
 import SongMarker from '../components/SongMarker';
 
 import { MapView } from 'expo';
-import SpotifyHelper from '../api/Spotify';
+import SpotifyAPI from '../api/Spotify';
 import GeolocationHelper from '../api/Geolocation';
-
-const styles = StyleSheet.create({
-	bottomTab: {
-		position: 'absolute',
-		bottom: 0,
-		flex: 1,
-		flexDirection: 'row',
-	},
-	bottomSubTab: {
-		flex: 1,
-		flexDirection: 'row',
-		justifyContent: 'space-evenly',
-	},
-	mapView: {
-		alignSelf: 'stretch',
-		height: Dimensions.get('window').height,
-	},
-});
 
 class HomeScreen extends React.Component {
 	constructor() {
 		super();
 		this.locationAPI = new GeolocationHelper();
-		this.spotifyAPI = new SpotifyHelper();
 
 		this.state = {
 			markers: [],
@@ -73,15 +55,11 @@ class HomeScreen extends React.Component {
 			this.props.fetchCurrentLocation(),
 			this.props.refreshToken(),
 		]);
-		const track = await this.spotifyAPI.getCurrentlyPlayingTrack(
+		const track = await SpotifyAPI.getCurrentlyPlayingTrack(
 			this.props.accessToken
 		);
 		if (!this.props.location.coords || !track) {
-			console.log(
-				'was supposed to make a new point, but either location or track information missing',
-				this.props.location.coords,
-				track
-			);
+			console.log('coordinates missing', this.props.location.coords);
 		} else {
 			await this.locationAPI.addBlurb(this.props.location.coords, track);
 			this.setState({

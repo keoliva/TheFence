@@ -8,17 +8,20 @@ export default class Geolocation {
 
 	async addBlurb(coords, track) {
 		console.log('ABOUT TO ADD ', coords, track);
-		const point = await fetch('http://localhost:8080/api/blurbs/create', {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ ...coords, ...track }),
-		}).then(res => res.json());
+		const point = await fetch(
+			'http://the-fence.herokuapp.com/api/blurbs/create',
+			{
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ ...coords, ...track }),
+			}
+		).then(res => res.json());
 		this.addNewMarkers([point], true);
 	}
 
 	async fetchBlurbsCloseBy({ latitude, longitude }) {
 		try {
-			const points = await fetch('http://localhost:8080/api/blurbs', {
+			const points = await fetch('http://the-fence.herokuapp.com/api/blurbs', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({

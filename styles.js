@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 
 export default StyleSheet.create({
 	container: {
@@ -6,5 +6,20 @@ export default StyleSheet.create({
 		backgroundColor: '#fff',
 		alignItems: 'center',
 		justifyContent: 'center',
+	},
+	bottomTab: {
+		position: 'absolute',
+		bottom: 0,
+		flex: 1,
+		flexDirection: 'row',
+	},
+	bottomSubTab: {
+		flex: 1,
+		flexDirection: 'row',
+		justifyContent: 'space-evenly',
+	},
+	mapView: {
+		alignSelf: 'stretch',
+		height: Dimensions.get('window').height,
 	},
 });
