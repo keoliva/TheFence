@@ -55,12 +55,13 @@ const createToken = async (code, refreshToken) => {
 };
 
 export const signIn = () => async dispatch => {
+	let result;
 	try {
 		const fields = [
 			'user-read-currently-playing',
 			'user-modify-playback-state',
 		];
-		const { params } = await AuthSession.startAsync({
+		result = await AuthSession.startAsync({
 			authUrl:
 				'https://accounts.spotify.com/authorize' +
 				`?client_id=${spotify.id}` +
@@ -68,7 +69,9 @@ export const signIn = () => async dispatch => {
 				`&response_type=code` +
 				`&scope=${encodeURIComponent(fields.join(' '))}`,
 		});
-		const { access_token, refresh_token } = await createToken(params.code);
+		const { access_token, refresh_token } = await createToken(
+			result.params.code
+		);
 		dispatch(
 			gotUserToken({
 				accessToken: access_token,
@@ -77,12 +80,15 @@ export const signIn = () => async dispatch => {
 			})
 		);
 	} catch (error) {
-		console.error(error);
+		// the result could be of "type" "cancel" or "error"
+		// where in the latter, the "errorCode" is "login-declined"
 	}
+	return result;
 };
 
 export const refreshTokenForRequest = () => async (dispatch, getState) => {
 	// I'll use this if I already have an access token in my AsyncStorage
+	console.log('refreshToken is here?', refreshToken);
 	let { accessToken, refreshToken } = getState().userToken;
 	try {
 		let userToken = await AsyncStorage.getItem('USER_TOKEN').then(token =>

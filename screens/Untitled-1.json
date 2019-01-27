@@ -1,0 +1,83 @@
+{
+  "timestamp" : 1548184194747,
+  "context" : {
+    "external_urls" : {
+      "spotify" : "https://open.spotify.com/album/4xnq1L6P551Qcb9gBXNMK7"
+    },
+    "href" : "https://api.spotify.com/v1/albums/4xnq1L6P551Qcb9gBXNMK7",
+    "type" : "album",
+    "uri" : "spotify:album:4xnq1L6P551Qcb9gBXNMK7"
+  },
+  "progress_ms" : 255544,
+  "item" : {
+    "album" : {
+      "album_type" : "album",
+      "artists" : [ {
+        "external_urls" : {
+          "spotify" : "https://open.spotify.com/artist/73sIBHcqh3Z3NyqHKZ7FOL"
+        },
+        "href" : "https://api.spotify.com/v1/artists/73sIBHcqh3Z3NyqHKZ7FOL",
+        "id" : "73sIBHcqh3Z3NyqHKZ7FOL",
+        "name" : "Childish Gambino",
+        "type" : "artist",
+        "uri" : "spotify:artist:73sIBHcqh3Z3NyqHKZ7FOL"
+      } ],
+      "available_markets" : [ "AD", "AE", "AR", "AT", "AU", "BE", "BG", "BH", "BO", "BR", "CA", "CH", "CL", "CO", "CR", "CY", "CZ", "DE", "DK", "DO", "DZ", "EC", "EE", "EG", "ES", "FI", "FR", "GB", "GR", "GT", "HK", "HN", "HU", "ID", "IE", "IL", "IS", "IT", "JO", "JP", "KW", "LB", "LI", "LT", "LU", "LV", "MA", "MC", "MT", "MX", "MY", "NI", "NL", "NO", "NZ", "OM", "PA", "PE", "PH", "PL", "PS", "PT", "PY", "QA", "RO", "SA", "SE", "SG", "SK", "SV", "TH", "TN", "TR", "TW", "US", "UY", "VN", "ZA" ],
+      "external_urls" : {
+        "spotify" : "https://open.spotify.com/album/4xnq1L6P551Qcb9gBXNMK7"
+      },
+      "href" : "https://api.spotify.com/v1/albums/4xnq1L6P551Qcb9gBXNMK7",
+      "id" : "4xnq1L6P551Qcb9gBXNMK7",
+      "images" : [ {
+        "height" : 640,
+        "url" : "https://i.scdn.co/image/49c99505c9dd13fb27b6bc82dfa69d0fe58f0193",
+        "width" : 640
+      }, {
+        "height" : 300,
+        "url" : "https://i.scdn.co/image/7fc3038cd640421f0b9f943a3854075227dc9b35",
+        "width" : 300
+      }, {
+        "height" : 64,
+        "url" : "https://i.scdn.co/image/e429d5a2d4c29fbb8fecaf23e114a168af754882",
+        "width" : 64
+      } ],
+      "name" : "\"Awaken, My Love!\"",
+      "release_date" : "2016-12-02",
+      "release_date_precision" : "day",
+      "total_tracks" : 11,
+      "type" : "album",
+      "uri" : "spotify:album:4xnq1L6P551Qcb9gBXNMK7"
+    },
+    "artists" : [ {
+      "external_urls" : {
+        "spotify" : "https://open.spotify.com/artist/73sIBHcqh3Z3NyqHKZ7FOL"
+      },
+      "href" : "https://api.spotify.com/v1/artists/73sIBHcqh3Z3NyqHKZ7FOL",
+      "id" : "73sIBHcqh3Z3NyqHKZ7FOL",
+      "name" : "Childish Gambino",
+      "type" : "artist",
+      "uri" : "spotify:artist:73sIBHcqh3Z3NyqHKZ7FOL"
+    } ],
+    "available_markets" : [ "AD", "AE", "AR", "AT", "AU", "BE", "BG", "BH", "BO", "BR", "CA", "CH", "CL", "CO", "CR", "CY", "CZ", "DE", "DK", "DO", "DZ", "EC", "EE", "EG", "ES", "FI", "FR", "GB", "GR", "GT", "HK", "HN", "HU", "ID", "IE", "IL", "IS", "IT", "JO", "JP", "KW", "LB", "LI", "LT", "LU", "LV", "MA", "MC", "MT", "MX", "MY", "NI", "NL", "NO", "NZ", "OM", "PA", "PE", "PH", "PL", "PS", "PT", "PY", "QA", "RO", "SA", "SE", "SG", "SK", "SV", "TH", "TN", "TR", "TW", "US", "UY", "VN", "ZA" ],
+    "disc_number" : 1,
+    "duration_ms" : 379226,
+    "explicit" : false,
+    "external_ids" : {
+      "isrc" : "USYAH1600102"
+    },
+    "external_urls" : {
+      "spotify" : "https://open.spotify.com/track/4r0GVpjSsKSR1biv4fOoa5"
+    },
+    "href" : "https://api.spotify.com/v1/tracks/4r0GVpjSsKSR1biv4fOoa5",
+    "id" : "4r0GVpjSsKSR1biv4fOoa5",
+    "is_local" : false,
+    "name" : "Me and Your Mama",
+    "popularity" : 66,
+    "preview_url" : "https://p.scdn.co/mp3-preview/64e729fdf233df7bb9730831e5481911f58ecb07?cid=774b29d4f13844c495f206cafdad9c86",
+    "track_number" : 1,
+    "type" : "track",
+    "uri" : "spotify:track:4r0GVpjSsKSR1biv4fOoa5"
+  },
+  "currently_playing_type" : "track",
+  "is_playing" : true
+}
