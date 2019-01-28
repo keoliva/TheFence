@@ -17,6 +17,8 @@ class HomeScreen extends React.Component {
 		this.lastLocation = null;
 
 		this.state = {
+			fetchLatitude: null,
+			fetchLongitude: null,
 			markers: [],
 		};
 
@@ -29,6 +31,8 @@ class HomeScreen extends React.Component {
 			async position => {
 				await this.locationAPI.fetchBlurbsCloseBy(position.coords);
 				this.setState({
+					fetchLatitude: position.coords.latitude,
+					fetchLongitude: position.coords.longitude,
 					markers: this.locationAPI.markers,
 				});
 			},
@@ -80,6 +84,15 @@ class HomeScreen extends React.Component {
 						this.lastLocation = region;
 					}}
 				>
+					{this.state.fetchLatitude && (
+						<MapView.Circle
+							center={{
+								latitude: this.state.fetchLatitude,
+								longitude: this.state.fetchLongitude,
+							}}
+							radius={100}
+						/>
+					)}
 					{this.state.markers.map(marker => (
 						<SongMarker
 							key={marker.id}
