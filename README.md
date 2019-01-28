@@ -11,44 +11,44 @@ const Sequelize = require('sequelize');
 module.exports = router;
 
 router.post('/', async (req, res, next) => {
-	try {
-		const blurbs = await Blurb.findAll({
-			where: Sequelize.where(
-				Sequelize.fn(
-					'ST_Distance_Sphere',
-					Sequelize.fn(
-						'ST_MakePoint',
-						parseFloat(req.body.latitude),
-						parseFloat(req.body.longitude)
-					),
-					Sequelize.col('location')
-				),
-				'<=',
-				parseFloat(100) // meters
-			),
-		});
-		res.json(blurbs);
-	} catch (err) {
-		next(err);
-	}
+  try {
+    const blurbs = await Blurb.findAll({
+      where: Sequelize.where(
+        Sequelize.fn(
+          'ST_Distance_Sphere',
+          Sequelize.fn(
+            'ST_MakePoint',
+            parseFloat(req.body.latitude),
+            parseFloat(req.body.longitude)
+          ),
+          Sequelize.col('location')
+        ),
+        '<=',
+        parseFloat(100) // meters
+      ),
+    });
+    res.json(blurbs);
+  } catch (err) {
+    next(err);
+  }
 });
 
 router.post('/create', async (req, res, next) => {
-	try {
-		const point = {
-			type: 'Point',
-			coordinates: [req.body.latitude, req.body.longitude],
-		};
-		const blurb = await Blurb.create({
-			location: point,
-			trackURI: req.body.trackURI,
-			trackName: req.body.trackName,
-			trackArtist: req.body.trackArtist,
-			trackProgress: req.body.trackProgress,
-		});
-		res.status(201).json(blurb);
-	} catch (err) {
-		next(err);
-	}
+  try {
+    const point = {
+      type: 'Point',
+      coordinates: [req.body.latitude, req.body.longitude],
+    };
+    const blurb = await Blurb.create({
+      location: point,
+      trackURI: req.body.trackURI,
+      trackName: req.body.trackName,
+      trackArtist: req.body.trackArtist,
+      trackProgress: req.body.trackProgress,
+    });
+    res.status(201).json(blurb);
+  } catch (err) {
+    next(err);
+  }
 });
 ```
