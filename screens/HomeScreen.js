@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, Alert } from 'react-native';
 import { logout, refreshTokenForRequest } from '../store';
 import styles from '../styles';
 import { connect } from 'react-redux';
@@ -51,16 +51,16 @@ class HomeScreen extends React.Component {
 	}
 
 	async onAddMarkerPress() {
-		// await Promise.all([
-		// 	this.props.fetchCurrentLocation(),
-		// 	this.props.refreshToken(),
-		// ]);
 		await this.props.refreshToken();
 		const track = await SpotifyAPI.getCurrentlyPlayingTrack(
 			this.props.accessToken
 		);
-		if (!this.lastLocation || !track) {
-			console.log('coordinates missing', this.lastLocation);
+		if (track.message) {
+			Alert.alert(
+				track.message,
+				"You're not currently listening to anything.",
+				[{ text: 'OK' }]
+			);
 		} else {
 			await this.locationAPI.addBlurb(this.lastLocation, track);
 			this.setState({
@@ -84,7 +84,14 @@ class HomeScreen extends React.Component {
 						<SongMarker
 							key={marker.id}
 							marker={marker}
-							play={() => SpotifyAPI.playTrack(this.props.accessToken, marker)}
+							play={async () => {
+								await this.props.refreshToken();
+								const result = await SpotifyAPI.playTrack(
+									this.props.accessToken,
+									marker
+								);
+								if (result) Alert.alert(result.message, '', [{ text: 'OK' }]);
+							}}
 						/>
 					))}
 				</MapView>

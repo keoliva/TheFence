@@ -1,13 +1,9 @@
-import { connect } from 'react-redux';
-import { fetchCurrentLocation } from '../store';
-
 export default class Geolocation {
 	constructor() {
 		this.markers = [];
 	}
 
 	async addBlurb(coords, track) {
-		console.log('ABOUT TO ADD ', coords, track);
 		const point = await fetch(
 			'http://the-fence.herokuapp.com/api/blurbs/create',
 			{
@@ -47,16 +43,3 @@ export default class Geolocation {
 		}
 	}
 }
-
-// const mapState = state => ({
-// 	location: state.location,
-// });
-
-// const mapDispatch = dispatch => ({
-// 	fetchLocation: () => dispatch(fetchCurrentLocation()),
-// });
-
-// export default connect(
-// 	mapState,
-// 	mapDispatch
-// )(Geolocation);

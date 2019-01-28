@@ -88,7 +88,6 @@ export const signIn = () => async dispatch => {
 
 export const refreshTokenForRequest = () => async (dispatch, getState) => {
 	// I'll use this if I already have an access token in my AsyncStorage
-	console.log('refreshToken is here?', refreshToken);
 	let { accessToken, refreshToken } = getState().userToken;
 	try {
 		let userToken = await AsyncStorage.getItem('USER_TOKEN').then(token =>
@@ -98,7 +97,7 @@ export const refreshTokenForRequest = () => async (dispatch, getState) => {
 			(new Date() - new Date(userToken.timeReceived)) / 1000
 		);
 		// if it's within 59 minutes of receiving the access token
-		if (secondsPassed <= 3540) {
+		if (secondsPassed <= 3540 && !refreshToken) {
 			dispatch(gotUserToken(userToken));
 			return;
 		}
